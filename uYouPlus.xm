@@ -374,8 +374,11 @@ static BOOL didFinishLaunching;
 }
 %new
 - (void)autoFullscreen {
-    YTWatchController *watchController = [self valueForKey:@"_UIDelegate"];
-    [watchController showFullScreen];
+    //YTWatchController *watchController = [self valueForKey:@"_UIDelegate"];
+    //[watchController showFullScreen];
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
+    [YTPlayerViewController attemptRotationToDeviceOrientation];
 }
 %end
 
@@ -629,14 +632,31 @@ static NSLayoutConstraint *widthConstraint, *heightConstraint, *centerXConstrain
     }
     
     %orig;
+    
+    if (![[self activeVideoPlayerOverlay] isFullscreen]) { // Entering full screen
+        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
+        [YTPlayerViewController attemptRotationToDeviceOrientation];
+    } else { // Exiting full screen
+        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
+        [YTPlayerViewController attemptRotationToDeviceOrientation];
+    }
+
 }
 - (void)didSwipeToEnterFullscreen {
     %orig; 
     if (!zoomedToFill && !engagementPanelIsVisible) DEMC_activate();
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
+    [YTPlayerViewController attemptRotationToDeviceOrientation];
 }
 - (void)didSwipeToExitFullscreen { 
     %orig; 
     DEMC_deactivate(); 
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
+    [YTPlayerViewController attemptRotationToDeviceOrientation];
 }
 // New video played
 -(void)playbackController:(id)playbackController didActivateVideo:(id)video withPlaybackData:(id)playbackData {
