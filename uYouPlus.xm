@@ -378,7 +378,7 @@ static BOOL didFinishLaunching;
     //[watchController showFullScreen];
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
-    [YTPlayerViewController attemptRotationToDeviceOrientation];
+    [UINavigationController attemptRotationToDeviceOrientation];
 }
 %end
 
@@ -636,11 +636,11 @@ static NSLayoutConstraint *widthConstraint, *heightConstraint, *centerXConstrain
     if (![[self activeVideoPlayerOverlay] isFullscreen]) { // Entering full screen
         NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
         [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
-        [YTPlayerViewController attemptRotationToDeviceOrientation];
+        [UINavigationController attemptRotationToDeviceOrientation];
     } else { // Exiting full screen
         NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
         [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
-        [YTPlayerViewController attemptRotationToDeviceOrientation];
+        [UINavigationController attemptRotationToDeviceOrientation];
     }
 
 }
@@ -649,14 +649,14 @@ static NSLayoutConstraint *widthConstraint, *heightConstraint, *centerXConstrain
     if (!zoomedToFill && !engagementPanelIsVisible) DEMC_activate();
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
-    [YTPlayerViewController attemptRotationToDeviceOrientation];
+    [UINavigationController attemptRotationToDeviceOrientation];
 }
 - (void)didSwipeToExitFullscreen { 
     %orig; 
     DEMC_deactivate(); 
     NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];    
-    [YTPlayerViewController attemptRotationToDeviceOrientation];
+    [UINavigationController attemptRotationToDeviceOrientation];
 }
 // New video played
 -(void)playbackController:(id)playbackController didActivateVideo:(id)video withPlaybackData:(id)playbackData {
